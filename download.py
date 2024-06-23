@@ -2,6 +2,7 @@ import yt_dlp
 import ffmpeg
 import re
 import os
+import shutil
 
 def time_str_to_seconds(time_str):
     parts = time_str.split(':')
@@ -47,6 +48,13 @@ def download_and_convert_youtube_video(url, start_time, end_time, download_full=
         
         os.remove('temp_video.mp4')  
         print(f"Video downloaded, converted, and saved to {output_filename}")
+        
+        video_dir = 'video'  
+        if not os.path.exists(video_dir):
+            os.makedirs(video_dir)
+        
+        shutil.move(output_filename, os.path.join(video_dir, output_filename))
+        print(f"Moved {output_filename} to {video_dir}")
         
     except Exception as e:
         print(f"Error: {e}")
